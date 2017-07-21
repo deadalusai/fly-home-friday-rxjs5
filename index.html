@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>RXJS 5.0 - The What, the How and the Why</title>
+        <meta charset="utf-8">
+        <style>
+            @import url(https://fonts.googleapis.com/css?family=Roboto);
+            @import url(https://fonts.googleapis.com/css?family=Droid+Sans:400,700,400italic);
+            @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+            body { font-family: 'Droid Sans'; }
+            h1, h2, h3 {
+                font-family: 'Roboto';
+                font-weight: normal;
+            }
+            li { margin-top: 5px; margin-bottom: 5px; font-size: 1.2em; }
+            p { font-size: 1.2em; }
+            .remark-code, .remark-inline-code {
+                font-family: 'Ubuntu Mono';
+            }
+            .remark-inline-code {
+                background: #f0f0f0;
+            }
+            a:before { content: '[ ' }
+            a:after { content: ' ]' }
+            a {
+                font-family: Consolas, Courier New, Courier, monospace;
+                text-transform: lowercase;
+                text-decoration: none;
+                color: #0881ca;
+            }
+            a:hover {
+                background-color: rgba(8, 129, 202, 0.1);
+            }
+            blockquote {
+                background-color: #f0f0f0;
+                margin: 0;
+                padding: 0 10px;
+            }
+    </style>
+    <link rel="stylesheet" href="./hljs-vs2017.css" />
+    </head>
+    <body>
+        <script type="text/javascript" src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+        <script type="text/javascript">
+            var slideshow = remark.create({ 
+                highlightStyle: 'monokai',
+                highlightLanguage: 'typescript',
+                highlightLines: true,
+                highlightSpans: true,
+                sourceUrl: 'presentation.md'
+            });
+        </script>
+    </body>
+</html>
