@@ -3,10 +3,10 @@
     - Advantages (Cancellable, represent sequence instead of single future)
     - Disadvantages (Subscriptions *usually* require cleanup)
     - Comparable (filter, map, join)
-[ ] Getting started
+[X] Getting started
     - Installing (NPM, webpack) - Importing, importing operators
     - Installing (traditional)  - Also possible, no need to demonstrate?
-[ ] Observable concepts
+[X] Observable concepts
     - Next, Error, Complete
     - Hot vs Cold
     - Others?
@@ -27,3 +27,5 @@
 [ ] Unit testing
     - Async tests
     - Hot/Cold observables can behave differently, makes mocking difficult
+
+SWITCH TO SYSTEMJS?

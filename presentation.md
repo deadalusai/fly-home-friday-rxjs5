@@ -63,8 +63,8 @@ How do observables compare with promises?
 
 Both support finite or infinite sequences, and support chaining and manipulation of results. Both provide an interface
 for error handling
-- Observables provide the __error__ callback.
-- Iterables may raise an error on __next__.
+- Observables provide the _error_ callback.
+- Iterables may raise an error on _next_.
 
 Only observables can represent asynchronous results.
 
@@ -105,7 +105,7 @@ y.subscribe(
 
 ???
 
-Both of these examples operate completely synchronously. This observable is called a __cold__ observable. We'll examine this more later. 
+Both of these examples operate completely synchronously. This observable is called a _cold_ observable. We'll examine this more later. 
 
 ---
 
@@ -174,7 +174,7 @@ y.subscribe(
 
 ???
 
-Both of these examples **should** operate completely synchronously. This observable is called a __cold__ observable. We'll examine this more later. 
+Both of these examples **should** operate completely synchronously. This observable is called a _cold_ observable. We'll examine this more later. 
 
 
 ---
@@ -185,19 +185,115 @@ RxJS is available is two forms:
 
 **Single file** - Install via CDN or local file.
   
-- Including the file directly declares a global `Rx` namespace. 
-- Including via a module loader (e.g. AMD):
+- Include the file directly declares a global `Rx` namespace. 
+- Include via a module loader (e.g. AMD)
 
-```
-require(['rx'], (Rx) => { ... }); 
-```
+> No official typings for this use-case :(
 
-**Modular** - Install via NPM or JSPM.
+
+**Modular** - Install via NPM/JSPM.
 
 Include using module import syntax. E.g. TypeScript: 
 
 ```
-import { Observable } from 'rxjs/Observable';`
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/switchMap'; // enable switchMap operator
 ```
 
-Modular imports allow you to include only the code you need on a per-operator basis.
+Modular imports allow you to include only the code you need on a per-operator basis, but requires a module loader like Webpack or SystemJS to ship code.
+
+
+???
+
+
+RxJS 5 is written in modular TypeScript, and requires a javascript module loader to use properly. There is a global/single-file version of the library available, but no official typings exist to use with it.
+
+With modular RxJS it is recommended that you import only the operators/functions you actually use within your application - this reduces the amount of code loaded at runtime.
+
+
+---
+
+
+# A few observable concepts
+
+- **Observable** - Represents an observable event/value sequence
+- **Observer** - A collection of callbacks which handle Observable events
+- **Subscription** - Represents the subscription to an observable of an observer. Used for cancellation
+- **Operators** - Functions for manipulating an Observable sequence, e.g. `flatMap`, `filter`
+- **Subject** - An _Observable_ with an API for generating events
+
+The **Observer** callbacks are:
+
+- `next(value)` - Called for each event in the stream
+- `error(err)` - Called when an error is emitted and the stream ends
+- `complete()` - Called when the stream ends (except on an error)
+
+
+???
+
+
+Some terms and their definitions.
+
+
+The three Observer callback functions and their behaviour map directly to the _Iterable_ interface.
+
+- **next** - The body of the `for` loop
+- **error** - An exception raised by the Iterator. This kills the loop
+- **complete** - The end of the loop
+
+
+---
+
+
+# Constructing Cold Observables
+
+Construct a cold, finite observable:
+
+```
+let o1 = Observable.of(1, 2, 3);
+```
+
+Construct a cold, dynamic observable:
+
+```
+let o2 = Rx.Observable.create(function (observer) {
+    observer.next(1);
+    observer.complete();
+})
+```
+
+
+???
+
+Cold observables emit their events for each subscriber, immediately on subscription. Every subscriber receives their own series of events (events are not shared).
+
+
+---
+
+
+# Constructing Hot Observables
+
+
+Construct a subject:
+
+```
+let s = new Subject();
+s.next(new Foo());
+s.complete();
+```
+
+Construct from an event:
+
+```
+let o3 = Observable.fromEvent(buttonElement, 'click');
+```
+
+Construct from a promise:
+
+```
+let o5 = Observable.fromPromise(promise);
+```
+
+???
+
+Warm observables emit only one series of events, which are sent to each subscriber as they arrive. Events are emitted to subscribers as they occur.
