@@ -1,0 +1,15 @@
+{
+  "name": "demo",
+  "version": "0.0.1",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "build": "tsc -p .",
+    "watch": "tsc -p . -w"
+  },
+  "devDependencies": {
+    "@reactivex/rxjs": "^5.4.2",
+    "typescript": "^2.4.2"
+  }
+}

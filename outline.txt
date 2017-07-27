@@ -1,0 +1,29 @@
+[X] Comparison to Iterables
+[X] Comparison to Promises
+    - Advantages (Cancellable, represent sequence instead of single future)
+    - Disadvantages (Subscriptions *usually* require cleanup)
+    - Comparable (filter, map, join)
+[ ] Getting started
+    - Installing (NPM, webpack) - Importing, importing operators
+    - Installing (traditional)  - Also possible, no need to demonstrate?
+[ ] Observable concepts
+    - Next, Error, Complete
+    - Hot vs Cold
+    - Others?
+[ ] Constructing observables
+    - cold - Observable.of()
+    - hot  - new Subject<T>()
+    - Other producers?
+[ ] A few "operators"
+    - switchMap?
+    - merge?
+    - Documentation, how to find operators
+[ ] switchMap demo
+[ ] When do I need to clean up subscriptions?
+    - "Internal" observables - garbage collector should deal?
+    - "External" observables - make sure to clean up subscriptions?
+    - Subscriptions also cleaned up automatically on Error or Complete
+[ ] Techniques for managing subscriptions
+[ ] Unit testing
+    - Async tests
+    - Hot/Cold observables can behave differently, makes mocking difficult
