@@ -10,7 +10,7 @@
     - Next, Error, Complete
     - Hot vs Cold
     - Others?
-[ ] Constructing observables
+[#] Constructing observables
     - cold - Observable.of()
     - hot  - new Subject<T>()
     - Other producers?

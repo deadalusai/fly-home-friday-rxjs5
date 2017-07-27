@@ -1,2 +1,2 @@
-rem python -m SimpleHTTPServer 1337
-python -m http.server 1337
+python -m SimpleHTTPServer 1337
+rem python -m http.server 1337

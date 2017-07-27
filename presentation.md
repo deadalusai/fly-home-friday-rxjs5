@@ -92,11 +92,11 @@ for (let val of b) {
 
 ```
 // Construct a "cold" observable
-let x = Observable.of(1, 2, 3);
-let y = x.filter(v => v % 2 === 0)
-         .map(v => v * 2);
+let x$ = Observable.of(1, 2, 3);
+let y$ = x$.filter(v => v % 2 === 0)
+           .map(v => v * 2);
 
-y.subscribe(
+y$.subscribe(
     val => console.log(val), 
     err => console.error(err),  // optional
     () => console.log('Done')   // optional
@@ -161,11 +161,11 @@ b.then(
 ### Observables
 
 ```
-let x = Observable.of('Hello from observables');
-let y = x.flatMap(v => someOtherAsyncThing(v))
-         .map(v => v * 2);
+let x$ = Observable.of('Hello from observables');
+let y$ = x$.flatMap(v => someOtherAsyncThing(v))
+           .map(v => v * 2);
 
-y.subscribe(
+y$.subscribe(
     val => console.log(val), 
     err => console.error(err), // optional
     () => console.log('Done')  // optional
@@ -174,7 +174,9 @@ y.subscribe(
 
 ???
 
-Both of these examples **should** operate completely synchronously. This observable is called a _cold_ observable. We'll examine this more later. 
+Both of these examples **should** operate completely synchronously (the Promise example may not for implementation reasons).
+
+This observable is called a _cold_ observable. We'll examine this more later. 
 
 
 ---
@@ -200,7 +202,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap'; // enable switchMap operator
 ```
 
-Modular imports allow you to include only the code you need on a per-operator basis, but requires a module loader like Webpack or SystemJS to ship code.
+Modular imports allow you to include only the code you need on a per-operator basis, but requires a module loader like Webpack or SystemJS to deliver code.
 
 
 ???
@@ -234,7 +236,6 @@ The **Observer** callbacks are:
 
 Some terms and their definitions.
 
-
 The three Observer callback functions and their behaviour map directly to the _Iterable_ interface.
 
 - **next** - The body of the `for` loop
@@ -244,29 +245,21 @@ The three Observer callback functions and their behaviour map directly to the _I
 
 ---
 
+# Hot vs Cold
 
-# Constructing Cold Observables
+There are two flavours of Observable: Hot and Cold.
 
-Construct a cold, finite observable:
+- **Hot** - Emits one series of events to all subscribers. Events are temporal.
 
-```
-let o1 = Observable.of(1, 2, 3);
-```
+- **Cold** - Emits a new series of events to each subscriber.
 
-Construct a cold, dynamic observable:
-
-```
-let o2 = Rx.Observable.create(function (observer) {
-    observer.next(1);
-    observer.complete();
-})
-```
-
+Both Hot and Cold observables may be synchronous or asynchronous.
 
 ???
 
-Cold observables emit their events for each subscriber, immediately on subscription. Every subscriber receives their own series of events (events are not shared).
+Hot observables emit one series of events, which are sent to each subscriber as they arrive. Events are emitted to subscribers as they occur. For example - observables based on an HTTP response, or DOM events on the page.
 
+Cold observables emit their events for each subscriber, immediately on subscription. Every subscriber receives their own series of events (events are not shared between subscribers). For example: A static observable constructed from an array using `Observable.of`.
 
 ---
 
@@ -277,23 +270,124 @@ Cold observables emit their events for each subscriber, immediately on subscript
 Construct a subject:
 
 ```
-let s = new Subject();
-s.next(new Foo());
-s.complete();
+let s$ = new Subject();
+s$.next(new Foo());
+s$.complete();
 ```
 
 Construct from an event:
 
 ```
-let o3 = Observable.fromEvent(buttonElement, 'click');
+let o3$ = Observable.fromEvent(buttonElement, 'click');
 ```
 
 Construct from a promise:
 
 ```
-let o5 = Observable.fromPromise(promise);
+let o5$ = Observable.fromPromise(promise);
 ```
 
 ???
 
-Warm observables emit only one series of events, which are sent to each subscriber as they arrive. Events are emitted to subscribers as they occur.
+Hot observables emit only one series of events, which are sent to each subscriber as they arrive. Events are emitted to subscribers as they occur.
+
+Importantly, if a subscriber is late to the party they will **not** receive events emitted before they subscribe (though there are operators which can change this behavior).
+
+Observables constructed from a Promise occupy a grey area between hot and cold - They emit a value and complete when the underlying Promise completes (Hot), but any future subscribers will also receive the cached value (Cold) - i.e. they behave just like promises.
+
+---
+
+
+# Constructing Cold Observables
+
+Construct a cold, finite observable:
+
+```
+let o1$ = Observable.of(1, 2, 3);
+```
+
+Construct a cold, dynamic observable:
+
+```
+let o2$ = Observable.create((observer) => {
+    observer.next(1);
+    observer.complete();
+});
+```
+
+
+???
+
+Cold observables emit their events for each subscriber, immediately on subscription.
+
+Every subscriber receives their own series of events (events are not shared).
+
+If the events are emitted synchronously, then the `next` callback will fire for every event before `subscribe` event exits.
+
+Cold observables can be thought of as an "event factory".
+
+---
+
+
+# Operators
+
+RxJS ships with a huge collection of **operators** - functions used to manipulate observable sequences.
+
+The RxJS Documentation has a wizard for finding operators!
+
+.center[
+![](images/10_rxjs_operator_wizard.png)
+
+[RxJS Documentation](http://reactivex.io/rxjs/)
+]
+
+
+???
+
+
+RxJS ships with a fairly confusing list of operators. There is no need to use (or even import) them all.
+
+If you are doing something new however, consider using the Wizard on the RxJS documentation to help you find the right operator for the job.
+
+
+---
+
+
+# Operator examples
+
+### Filter
+
+Filters events to downstream subscribers.
+
+```
+obs$.filter(val => val > 0)
+```
+
+### Map
+
+Transforms events for downstream subscribers.
+
+```
+obs$.map(val => val * 2)
+```
+
+### Merge
+
+Combines events from multiple Observables into a single stream.
+
+```
+obs$.merge(obs2$)
+```
+
+
+???
+
+
+Filter - Works like `where` in C# - evaluated lazily.
+
+Map - Works like `select` in C# - evaluated lazily.
+
+Merge - Merges two Observables into a single stream. Because it relies on events being temporal, this operator behaves differently with synchronous and asynchronous observables!
+
+
+---
