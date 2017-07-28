@@ -584,6 +584,38 @@ Consider writing a tslint lint to check for `_destroyed`...
 
 ---
 
+class: center, middle, inverse
+
+# Demo
+
+???
+
+# Demo 2
+
+## Track the subscription and dispose
+
+    import { Subscription } from 'rxjs/Subscription';
+
+    private _sub: Subscription;
+
+    this._sub = ...;
+
+    this._sub.unsubscribe();
+
+## Use _destroyed$ pattern
+
+    import 'rxjs/add/operator/takeUntil';
+    
+    import { Subject } from 'rxjs/Subject';
+    
+    private _destroyed$ = new Subject();
+    
+    .takeUntil(this._destroyed$)
+    
+    this._destroyed$.next();
+
+---
+
 
 # Unit testing
 
