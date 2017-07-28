@@ -619,10 +619,10 @@ class: center, middle, inverse
 
 # Unit testing
 
+- Many tests involving Observables must be **async** tests!
 - Be aware of the differences between...
     + Hot and Cold observables
     + Synchronous and Asynchronous observables
-- Many tests involving Observables must be **async** tests!
 
 E.g. Sync...
 
@@ -648,4 +648,11 @@ It is important to be aware of the differences between hot/cold and sync/async  
 
 ---
 
+class: middle
 
+.center[
+# Additional resources
+]
+
+- [RxJS Documentation](http://reactivex.io/rxjs/)
+- [Rx Marbles](http://rxmarbles.com/) - A visualization tool for Rx operators
