@@ -24,7 +24,7 @@
     - "External" observables - make sure to clean up subscriptions?
     - Subscriptions also cleaned up automatically on Error or Complete
 [X] Techniques for managing subscriptions
-[ ] Cleanup demo
+[X] Cleanup demo
 [X] Unit testing
     - Async tests
     - Hot/Cold observables can behave differently, makes mocking difficult

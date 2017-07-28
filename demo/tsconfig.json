@@ -1,24 +1,26 @@
 {
+    "include": [
+        "./src/**/*.ts"
+    ],
     "compilerOptions": {
-        "module": "es6",
-        "target": "es6",
+        // Input
         "moduleResolution": "node",
-        "traceResolution": false,
+        "lib": [
+            "dom",
+            "es6"
+        ],
+
+        // Output
+        "outDir": "./out",
+        "target": "es6",
+        "module": "es6",
+        "importHelpers": true,
+        
+        // Compiler options
         "noImplicitAny": true,
         "noImplicitThis": true,
         "noFallthroughCasesInSwitch": true,
         "noUnusedLocals": false,
-        "noUnusedParameters": false,
-        "importHelpers": true,
-        "outDir": "./out",
-        "lib": [
-            "dom",
-            "es5",
-            "es2015.promise",
-            "es2015.iterable"
-        ]
-    },
-    "include": [
-        "./src/**/*.ts"
-    ]
+        "noUnusedParameters": false
+    }
 }

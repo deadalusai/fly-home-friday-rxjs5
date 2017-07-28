@@ -1,9 +1,6 @@
 {
   "name": "demo",
   "version": "0.0.1",
-  "directories": {
-    "lib": "lib"
-  },
   "scripts": {
     "build:tsc": "tsc -p .",
     "watch:tsc": "tsc -p . -w",
