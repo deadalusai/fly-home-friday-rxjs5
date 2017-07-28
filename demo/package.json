@@ -5,11 +5,21 @@
     "lib": "lib"
   },
   "scripts": {
-    "build": "tsc -p .",
-    "watch": "tsc -p . -w"
+    "build:tsc": "tsc -p .",
+    "watch:tsc": "tsc -p . -w",
+    "build:webpack": "webpack ./out/main.js ./out/bundle.js",
+    "watch:webpack": "webpack ./out/main.js ./out/bundle.js -d -w",
+    "build": "run-s build:tsc build:webpack",
+    "watch": "run-p watch:tsc watch:webpack"
+  },
+  "dependencies": {
+    "@reactivex/rxjs": "^5.4.2",
+    "rxjs": "^5.4.2",
+    "tslib": "^1.7.1"
   },
   "devDependencies": {
-    "@reactivex/rxjs": "^5.4.2",
-    "typescript": "^2.4.2"
+    "npm-run-all": "^4.0.2",
+    "typescript": "^2.4.2",
+    "webpack": "^3.4.1"
   }
 }

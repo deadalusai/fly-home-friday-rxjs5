@@ -1,4 +1,4 @@
-import { Observable } from 'rx';
+import { Observable } from 'rxjs/Observable';
 
 console.log('Example 2');
 
@@ -16,11 +16,11 @@ b.then(
     err => console.error('Promise', err)
 );
 
-let x = Observable.of('Hello from observables');
-let y = x.flatMap(v => someOtherAsyncThing(v))
-         .map(v => v * 2);
+let x$ = Observable.of('Hello from observables');
+let y$ = x$.concatMap(v => someOtherAsyncThing(v))
+           .map(v => v * 2);
 
-y.subscribe(
+y$.subscribe(
     val => console.log('Observable', val), 
     err => console.error('Observable', err), // optional
     () => console.log('Observable', 'Done')  // optional

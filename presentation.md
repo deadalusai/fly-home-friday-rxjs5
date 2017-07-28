@@ -162,7 +162,7 @@ b.then(
 
 ```
 let x$ = Observable.of('Hello from observables');
-let y$ = x$.flatMap(v => someOtherAsyncThing(v))
+let y$ = x$.concatMap(v => someOtherAsyncThing(v))
            .map(v => v * 2);
 
 y$.subscribe(

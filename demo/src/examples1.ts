@@ -1,4 +1,4 @@
-import { Observable } from 'rx';
+import { Observable } from 'rxjs/Observable';
 
 console.log('Example 1');
 
@@ -13,11 +13,11 @@ for (let val of b) {
 }
 
 // Construct a "cold" observable
-let x = Observable.of(1, 2, 3);
-let y = x.filter(v => v % 2 === 0)
-            .map(v => v * 2);
+let x$ = Observable.of(1, 2, 3);
+let y$ = x$.filter(v => v % 2 === 0)
+           .map(v => v * 2);
 
-y.subscribe(
+y$.subscribe(
     val => console.log('Observable', val), 
     err => console.error('Observable', err),  // optional
     () => console.log('Observable', 'Done')   // optional

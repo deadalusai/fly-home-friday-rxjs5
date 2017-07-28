@@ -1,6 +1,9 @@
 {
     "compilerOptions": {
-        "module": "amd",
+        "module": "es6",
+        "target": "es6",
+        "moduleResolution": "node",
+        "traceResolution": false,
         "noImplicitAny": true,
         "noImplicitThis": true,
         "noFallthroughCasesInSwitch": true,
