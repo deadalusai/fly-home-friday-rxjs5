@@ -13,9 +13,9 @@
 
     "[markdown]": {
         "editor.rulers": [
-            100
+            85
         ],
         "editor.wordWrap": "wordWrapColumn",
-        "editor.wordWrapColumn": 100
+        "editor.wordWrapColumn": 85
     }
 }

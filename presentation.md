@@ -1,4 +1,4 @@
-class: center, middle
+class: center, middle, inverse
 
 # RxJS 5.0
 ## The What, the How and the Why
@@ -355,7 +355,7 @@ If you are doing something new however, consider using the Wizard on the RxJS do
 
 # Operator examples
 
-### Filter
+### filter
 
 Filters events to downstream subscribers.
 
@@ -363,7 +363,7 @@ Filters events to downstream subscribers.
 obs$.filter(val => val > 0)
 ```
 
-### Map
+### map
 
 Transforms events for downstream subscribers.
 
@@ -371,23 +371,110 @@ Transforms events for downstream subscribers.
 obs$.map(val => val * 2)
 ```
 
-### Merge
+### do
+
+Observes events without modifying the stream.
+
+```
+obs$.do(val => console.log(val))
+```
+
+
+---
+
+
+# Operator examples
+
+### timeout
+
+Raises an error on the stream if the stream times out.
+
+```
+obs$.timeout(500)
+```
+
+### debounce
+
+Debounces events on the stream.
+
+```
+obs$.debounce(500)
+```
+
+### delay
+
+Delays all events on the stream by a fixed time.
+
+```
+obs$.delay(500)
+```
+
+???
+
+Debounce - events are only emitted if more than N milliseconds apart.
+
+---
+
+
+# Operator examples
+
+### merge
 
 Combines events from multiple Observables into a single stream.
 
 ```
-obs$.merge(obs2$)
+Observable.merge(obs1$, obs2$)
+```
+
+### race
+
+Emits events only from the first observable to emit an event.
+
+```
+Observable.race(obs1$, obs2$)
 ```
 
 
 ???
 
-
-Filter - Works like `where` in C# - evaluated lazily.
-
-Map - Works like `select` in C# - evaluated lazily.
-
 Merge - Merges two Observables into a single stream. Because it relies on events being temporal, this operator behaves differently with synchronous and asynchronous observables!
 
 
 ---
+
+
+# An advanced operator
+
+### switchMap
+
+Construct a new Observable for each value on the stream, then switch to emitting values from that observable.
+
+This can be used, for instance, to easily construct an asynchronous type-ahead lookup.
+
+```
+let input$ = Observable.fromEvent(textbox, 'keydown').map(e => textbox.text);
+let values$ = input$.switchMap(text => asyncApiLookup(text));
+
+values$.subscribe(data => {
+    updateTypeaheadDropdown(data);
+});
+```
+
+`values$` only emits data when the API request completes and _is not superceded_ by another keypress.
+
+
+???
+
+
+Every event on the `input$` stream (triggered by a keypress) kicks off a new request to the server.
+
+Importantly, however - when `switchMap` subscribes to the new observable, it _unsubscribes_ from the old observable. `values$` only emits values from the _most recent_ observable.
+
+It is worth noting that `switchMap` ignores "complete" events on the child observable, but not "error" events.
+
+
+---
+
+class: center, middle, inverse
+
+# Demo
