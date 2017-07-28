@@ -18,7 +18,7 @@
     - switchMap?
     - merge?
     - Documentation, how to find operators
-[ ] switchMap demo
+[X] switchMap demo
 [ ] When do I need to clean up subscriptions?
     - "Internal" observables - garbage collector should deal?
     - "External" observables - make sure to clean up subscriptions?

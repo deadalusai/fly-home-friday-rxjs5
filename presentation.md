@@ -478,3 +478,70 @@ It is worth noting that `switchMap` ignores "complete" events on the child obser
 class: center, middle, inverse
 
 # Demo
+
+
+---
+
+
+# Cleaning up after yourself
+
+Subscriptions must be manually cleaned up when:
+
+- Subscribed to an infinite sequence
+- Subscribed to a finite but long-running and incomplete observable
+
+Failure to do so can lead to object leaks!
+
+```
+// Observable lives for lifetime of app!
+let o$ = App.acquireGrandCentralDispatch();
+
+// Potential leak of `this`!
+this.sub1 = o$.subscribe(e => this.handleEvent(e));
+```
+
+When the user navigates away from your component...
+
+```
+// Leak sorted
+this.sub1.unsubscribe();
+```
+
+???
+
+When subscribing to observables it may be necessary to clean up after yourself.
+
+For example, a UI component may subscribe to some central event bus to receive notifications of global events.
+
+When the user dismisses your UI component, you _must_ clean up your subscription, or risk leaking objects.
+
+Keeping track of lots of subscriptions can become tedious, though...
+
+
+---
+
+
+# Cleaning up (advanced)
+
+Instead, you can use the `_destroyed$` pattern to automatically clean up subscriptions.
+
+```
+// Stored as member variable of your component
+this._destroyed$ = new Subject();
+
+App.acquireGrandCentralDispatch()
+    .takeUntil(this._destroyed$)
+    .subscribe(e => this.handleEvent(e));
+```
+
+When the user navigates away from your component...
+
+```
+_destroyed$.next();
+```
+
+???
+
+Use the `_destroyed$` pattern instead! This takes advantage of the fact that subscriptions are automatically cleaned up when a stream errors or completes.
+
+Consider writing a tslint lint to check for `_destroyed`...
