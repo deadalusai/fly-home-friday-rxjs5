@@ -479,6 +479,41 @@ class: center, middle, inverse
 
 # Demo
 
+???
+
+# Demo 1
+
+## Add imports
+
+    // These are done once per project
+    import 'rxjs/add/observable/fromEvent';
+    import 'rxjs/add/operator/switchMap';
+
+    import { Observable } from 'rxjs/Observable';
+
+
+## Add basic implementation
+
+    let input$ = Observable.fromEvent(textbox, 'keyup').map(e => textbox.value);
+    let values$ = input$.switchMap(searchTerm => getDataAsync(searchTerm));
+
+    values$.subscribe(data => {
+        updateOutput(data);
+    });
+
+## Debounce
+
+    import 'rxjs/add/operator/debounceTime';
+
+Add `.debounceTime(300)` to values$ definition.
+
+
+# Add "initial" value to input
+
+    import 'rxjs/add/operator/startWith';
+
+Add `.startWith('')` to values$ definition.
+
 
 ---
 
@@ -545,3 +580,40 @@ _destroyed$.next();
 Use the `_destroyed$` pattern instead! This takes advantage of the fact that subscriptions are automatically cleaned up when a stream errors or completes.
 
 Consider writing a tslint lint to check for `_destroyed`...
+
+
+---
+
+
+# Unit testing
+
+- Be aware of the differences between...
+    + Hot and Cold observables
+    + Synchronous and Asynchronous observables
+- Many tests involving Observables must be **async** tests!
+
+E.g. Sync...
+
+```
+let o1$ = Observable.of(1, 2, 3);
+let o2$ = Observable.of(4, 5, 6);
+let result$ = Observable.merge(o1$, o2$); // 1, 2, 3, 4, 5, 6
+```
+
+vs Async...
+
+```
+let o1$ = makeRealAsyncSequence(1, 2, 3);
+let o2$ = makeRealAsyncSequence(4, 5, 6);
+let result$ = Observable.merge(o1$, o2$); // 1, 4, 2, 5, 3, 6
+```
+
+
+???
+
+It is important to be aware of the differences between hot/cold and sync/async  observables. You app may unwittingly depend on the behaviour of one or the other, which you will then need to mock carefully.
+
+
+---
+
+

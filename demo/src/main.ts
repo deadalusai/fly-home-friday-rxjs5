@@ -5,4 +5,4 @@ import 'rxjs/add/operator/concatMap';
 
 import './examples1';
 import './examples2';
-import './demo1';
+// import './demo1';

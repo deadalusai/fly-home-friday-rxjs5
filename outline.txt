@@ -19,13 +19,12 @@
     - merge?
     - Documentation, how to find operators
 [X] switchMap demo
-[ ] When do I need to clean up subscriptions?
+[X] When do I need to clean up subscriptions?
     - "Internal" observables - garbage collector should deal?
     - "External" observables - make sure to clean up subscriptions?
     - Subscriptions also cleaned up automatically on Error or Complete
-[ ] Techniques for managing subscriptions
-[ ] Unit testing
+[X] Techniques for managing subscriptions
+[ ] Cleanup demo
+[X] Unit testing
     - Async tests
     - Hot/Cold observables can behave differently, makes mocking difficult
-
-SWITCH TO SYSTEMJS?
